@@ -1,11 +1,14 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/db/db_connect.php';
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+require_once __DIR__ . '/db/db_connect.php';
 require_once __DIR__ . '/includes/layout.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verifyCsrfToken();
     $action = $_POST['action'] ?? '';
 
     if ($action === 'delete') {
@@ -50,6 +53,7 @@ renderHeader('プロジェクト管理');
         <h2><?= $editProject ? 'プロジェクト編集' : 'プロジェクト作成' ?></h2>
     </div>
     <form method="post" class="form-grid">
+        <?= csrfField() ?>
         <input type="hidden" name="action" value="<?= $editProject ? 'update' : 'create' ?>">
         <?php if ($editProject): ?>
             <input type="hidden" name="id" value="<?= e((string) $editProject['id']) ?>">
@@ -109,6 +113,7 @@ renderHeader('プロジェクト管理');
                         <td data-label="操作">
                             <a class="button secondary" href="projects.php?edit=<?= e((string) $project['id']) ?>">編集</a>
                             <form class="inline-form" method="post" onsubmit="return confirm('削除しますか？');">
+                                <?= csrfField() ?>
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="<?= e((string) $project['id']) ?>">
                                 <button class="danger" type="submit">削除</button>
@@ -121,4 +126,3 @@ renderHeader('プロジェクト管理');
     </div>
 </section>
 <?php renderFooter(); ?>
-

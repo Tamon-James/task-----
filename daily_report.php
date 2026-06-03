@@ -1,13 +1,16 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/db/db_connect.php';
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+require_once __DIR__ . '/db/db_connect.php';
 require_once __DIR__ . '/includes/layout.php';
 
 $reportDate = $_POST['report_date'] ?? $_GET['date'] ?? date('Y-m-d');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verifyCsrfToken();
     $params = [
         $_POST['report_date'],
         trim($_POST['done_text']),
@@ -74,6 +77,7 @@ renderHeader('日報管理');
             <h2>日報入力</h2>
         </div>
         <form method="post" class="form-grid">
+            <?= csrfField() ?>
             <label class="form-full">日付
                 <input type="date" name="report_date" value="<?= e($report['report_date']) ?>" required>
             </label>
@@ -116,4 +120,3 @@ renderHeader('日報管理');
     </div>
 </section>
 <?php renderFooter(); ?>
-

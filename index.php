@@ -1,8 +1,10 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/db/db_connect.php';
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+require_once __DIR__ . '/db/db_connect.php';
 require_once __DIR__ . '/includes/layout.php';
 
 $today = date('Y-m-d');
@@ -42,7 +44,12 @@ $weeklyGoals = $weeklyGoalsStmt->fetchAll();
 $goals = $pdo->query('SELECT * FROM long_goals ORDER BY COALESCE(deadline, "9999-12-31"), id DESC LIMIT 5')->fetchAll();
 $todayGoal = $goals[0]['next_action'] ?? '今日の目標を long_goals.php から登録してください。';
 $taskCount = count($todayTasks);
-$doneCount = count(array_filter($todayTasks, fn(array $task): bool => $task['status'] === '完了'));
+$doneCount = 0;
+foreach ($todayTasks as $task) {
+    if ($task['status'] === '完了') {
+        $doneCount++;
+    }
+}
 $completionRate = $taskCount > 0 ? round(($doneCount / $taskCount) * 100) : 0;
 
 renderHeader('ホームダッシュボード');
@@ -184,4 +191,3 @@ renderHeader('ホームダッシュボード');
     </div>
 </section>
 <?php renderFooter(); ?>
-

@@ -320,6 +320,30 @@ th {
     border-radius: 8px;
 }
 
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+
+.login-card {
+    width: min(100%, 420px);
+}
+
+.login-card h1 {
+    margin-bottom: 6px;
+}
+
+.alert {
+    margin: 14px 0;
+    padding: 10px 12px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #991b1b;
+}
+
 @media (max-width: 768px) {
     .header-inner {
         align-items: flex-start;
@@ -394,4 +418,3 @@ th {
         font-weight: 700;
     }
 }
-

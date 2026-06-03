@@ -29,6 +29,9 @@ function renderHeader(string $title): void
             <?php foreach ($navItems as $href => $label): ?>
                 <a class="<?= $current === $href ? 'active' : '' ?>" href="<?= e($href) ?>"><?= e($label) ?></a>
             <?php endforeach; ?>
+            <?php if (function_exists('isLoggedIn') && isLoggedIn()): ?>
+                <a href="logout.php">ログアウト</a>
+            <?php endif; ?>
         </nav>
     </div>
 </header>
@@ -48,4 +51,3 @@ function renderFooter(): void
 </html>
 <?php
 }
-

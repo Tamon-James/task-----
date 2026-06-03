@@ -27,7 +27,7 @@ function fetchProjects(PDO $pdo): array
     return $pdo->query('SELECT id, name FROM projects ORDER BY name')->fetchAll();
 }
 
-function formatMinutes(int|string|null $minutes): string
+function formatMinutes($minutes): string
 {
     if ($minutes === null || $minutes === '') {
         return '-';
