@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 const DB_HOST = 'localhost';
-const DB_NAME = 'personal_task_manager';
-const DB_USER = 'root';
-const DB_PASS = '';
+const DB_NAME = 'jmestamon_task_table';
+const DB_USER = 'jmestamon_task_table';
+const DB_PASS = 'LDtbu3ePQ3V49b5LVEMh';
 
 try {
     $pdo = new PDO(
