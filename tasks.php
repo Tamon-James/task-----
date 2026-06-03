@@ -17,6 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('tasks.php');
     }
 
+    if ($action === 'complete') {
+        $stmt = $pdo->prepare("UPDATE tasks SET status = '完了' WHERE id = ?");
+        $stmt->execute([(int) $_POST['id']]);
+        redirect('tasks.php');
+    }
+
     $projectId = $_POST['project_id'] !== '' ? (int) $_POST['project_id'] : null;
     $estimatedMinutes = $_POST['estimated_minutes'] !== '' ? (int) $_POST['estimated_minutes'] : null;
     $params = [
@@ -175,6 +181,14 @@ renderHeader('タスク管理');
                         <td data-label="時間"><?= e(formatMinutes($task['estimated_minutes'])) ?></td>
                         <td data-label="状態"><?= e($task['status']) ?></td>
                         <td data-label="操作">
+                            <?php if ($task['status'] !== '完了'): ?>
+                                <form class="inline-form" method="post">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="action" value="complete">
+                                    <input type="hidden" name="id" value="<?= e((string) $task['id']) ?>">
+                                    <button type="submit">完了</button>
+                                </form>
+                            <?php endif; ?>
                             <a class="button secondary" href="tasks.php?edit=<?= e((string) $task['id']) ?>">編集</a>
                             <form class="inline-form" method="post" onsubmit="return confirm('削除しますか？');">
                                 <?= csrfField() ?>
